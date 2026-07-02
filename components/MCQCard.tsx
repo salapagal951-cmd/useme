@@ -9,47 +9,64 @@ type MCQCardProps = {
   mcq: MCQ;
 };
 
-export default function MCQCard({ index, mcq }: MCQCardProps) {
+export default function MCQCard({
+  index,
+  mcq,
+}: MCQCardProps) {
   return (
-    <div className="mb-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+    <div className="mb-6 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm sm:p-7">
 
       {/* Question Number */}
-      <div className="mb-4 flex items-center justify-between">
-        <span className="rounded-full bg-blue-600 px-4 py-1 text-sm font-semibold text-white">
+
+      <div className="mb-5">
+
+        <span className="inline-flex rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white">
           Question {index + 1}
         </span>
+
       </div>
 
       {/* Question */}
-      <h2 className="text-1g font-semibold leading-8 text-black">
+
+      <h2 className="text-xl font-semibold leading-9 text-zinc-900">
         {mcq.question}
       </h2>
 
       {/* Options */}
-      <div className="mt-4 space-y-2">
+
+      <div className="mt-6 space-y-3">
+
         {mcq.options.map((option, i) => (
+
           <div
             key={i}
-            className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-black transition hover:bg-gray-100"
+            className="rounded-xl border border-zinc-200 bg-zinc-50 px-5 py-4 text-base text-zinc-800 transition hover:border-blue-200 hover:bg-blue-50"
           >
-            <span className="mr-2 font-bold">
+
+            <span className="mr-3 font-bold">
               {String.fromCharCode(65 + i)}.
             </span>
 
             {option}
+
           </div>
+
         ))}
+
       </div>
 
       {/* Answer */}
-      <div className="mt-4 rounded-1g border border-green-200 bg-green-50 p-4">
-        <span className="font-semibold text-green-700">
-          ✅ Correct Answer:
-        </span>
 
-        <span className="ml-2 text-black">
+      <div className="mt-6 rounded-xl border border-green-200 bg-green-50 p-4">
+
+        <p className="font-semibold text-green-700">
+          ✅ Correct Answer
+        </p>
+
+        <p className="mt-2 text-zinc-900">
           {mcq.answer}
-        </span>
+        </p>
+
       </div>
 
     </div>
