@@ -156,7 +156,7 @@ export default function Home() {
           </p>
 
           <p className="mt-6 text-xs text-zinc-400">
-            Beta v0.1
+            v0.2
           </p>
         </footer>
       </div>

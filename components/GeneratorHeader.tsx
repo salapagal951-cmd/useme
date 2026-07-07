@@ -19,7 +19,7 @@ export default function GeneratorHeader({
       </p>
 
       <div className="mt-5 inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-sm text-blue-700">
-       <Badge>v0.1 Beta</Badge>
+       <Badge>v0.2</Badge>
         {loading && (
           <span className="ml-2 font-medium">
             • Generating...

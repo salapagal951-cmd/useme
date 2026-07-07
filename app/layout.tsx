@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://studydif.vercel.app/"),
+  metadataBase: new URL("https://studydif.vercel.app"),
 
   title: {
     default: "StudyDif - AI MCQ & Quiz Generator",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://studydif.vercel.app/",
+    url: "https://studydif.vercel.app",
     siteName: "StudyDif",
     title: "StudyDif - AI MCQ & Quiz Generator",
     description:

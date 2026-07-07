@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://studydif.vercel.app/";
+  const baseUrl = "https://studydif.vercel.app";
 
   return [
     {
@@ -12,14 +12,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
 
     {
-      url: `${baseUrl}/mcq-generator`,
+      url: `https://studydif.vercel.app/mcq-generator`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
 
     {
-      url: `${baseUrl}/file-quiz`,
+      url: `https://studydif.vercel.app/file-quiz`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
