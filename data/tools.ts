@@ -1,26 +1,26 @@
 export const tools = [
   {
-    title: "AI MCQ Generator",
-    description: "Generate exam-ready questions from topics or notes.",
+    id: "mcq-generator",
+    title: "AI MCQ/Quiz Generator",
+    description: "Generate exam-ready quizzes from topics or notes.",
     href: "/mcq-generator",
     available: true,
   },
   {
-    title: "PDF → Quiz",
-    description: "Convert previous year papers into interactive quizzes.",
-    available: false,
-  },
+  id: "file-quiz",
+  title: "File → Quiz",
+  description: "Upload PDFs or images and turn them into interactive quizzes.",
+  href: "/file-quiz",
+  available: true,
+},
   {
-    title: "Image → Quiz",
-    description: "Turn images into instant practice questions.",
-    available: false,
-  },
-  {
+    id: "ai-notes",
     title: "AI Notes",
-    description: "Generate structured study notes in seconds.",
+    description: "Generate structured, exam-focused notes in seconds.",
     available: false,
   },
   {
+    id: "flashcards",
     title: "Flashcards",
     description: "Revise faster with AI-generated flashcards.",
     available: false,

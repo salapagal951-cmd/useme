@@ -26,12 +26,9 @@ export default function ToolCard({
     if (title.includes("MCQ"))
       return <Brain size={26} className="text-blue-600" />;
 
-    if (title.includes("PDF"))
-      return <FileText size={26} className="text-red-500" />;
-
-    if (title.includes("Image"))
-      return <Image size={26} className="text-emerald-500" />;
-
+    if (title.includes("File"))
+  return <FileText size={26} className="text-red-500" />;
+    
     if (title.includes("Notes"))
       return <NotebookPen size={26} className="text-orange-500" />;
 

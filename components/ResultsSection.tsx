@@ -1,5 +1,10 @@
+"use client";
+
+import { useState } from "react";
+
 import Button from "@/components/Button";
 import MCQCard from "@/components/MCQCard";
+import QuizPlayer from "@/components/QuizPlayer/QuizPlayer";
 
 type MCQ = {
   question: string;
@@ -12,7 +17,7 @@ type Props = {
   studyMode: "topic" | "notes";
   topic: string;
   difficulty: string;
-  questionCount: number;
+ questionCount: number | "max";
   downloadPDF: () => void;
 };
 
@@ -24,7 +29,18 @@ export default function ResultsSection({
   questionCount,
   downloadPDF,
 }: Props) {
+  const [quizStarted, setQuizStarted] = useState(false);
+
   if (mcqs.length === 0) return null;
+if (quizStarted) {
+  return (
+    <QuizPlayer
+  mcqs={mcqs}
+  onDownloadPDF={downloadPDF}
+  onNewQuiz={() => window.location.reload()}
+/>
+  );
+}
 
   return (
     <>
@@ -52,7 +68,9 @@ export default function ResultsSection({
 
             <p>
               <span className="font-medium">Questions:</span>{" "}
-              {questionCount}
+{questionCount === "max"
+  ? "Maximum Possible"
+  : questionCount}
             </p>
           </div>
         </div>
@@ -70,14 +88,36 @@ export default function ResultsSection({
         </div>
       </div>
 
-      {/* Download */}
+      {/* Quiz Ready Card */}
 
-      <Button
-        onClick={downloadPDF}
-        className="mt-8 w-full bg-zinc-900 hover:bg-zinc-800"
-      >
-        📄 Download PDF
-      </Button>
+      <div className="mt-8 rounded-3xl border border-zinc-200 bg-zinc-50 p-6 text-center shadow-sm">
+        <h3 className="text-2xl font-bold text-zinc-900">
+          🎉 Your quiz is ready!
+        </h3>
+
+        <p className="mt-3 text-sm text-zinc-600">
+          You've reviewed your generated questions. Continue with an
+          interactive quiz or save them as a PDF for later.
+        </p>
+
+        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+         <Button
+    onClick={() => setQuizStarted(true)}
+    variant="primary"
+    className="w-full"
+>
+    🎯 Practice Quiz
+</Button>
+
+          <Button
+    onClick={downloadPDF}
+    variant="secondary"
+    className="w-full"
+>
+    📄 Download PDF
+</Button>
+        </div>
+      </div>
     </>
   );
 }

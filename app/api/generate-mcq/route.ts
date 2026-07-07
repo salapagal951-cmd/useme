@@ -41,9 +41,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const prompt =
-      studyMode === "topic"
-        ? `
+   const topicPrompt = `
 You are an expert competitive exam paper setter.
 
 Generate EXACTLY ${questionCount} ${difficulty} multiple choice questions on:
@@ -77,11 +75,14 @@ Rules:
 - Each question must have exactly 4 options.
 - Answer must exactly match one option.
 - Mix factual and conceptual questions.
-`
-        : `
+`;
+
+const notesPrompt =
+  questionCount === "max"
+    ? `
 You are an expert competitive exam paper setter.
 
-Generate EXACTLY ${questionCount} ${difficulty} multiple choice questions from these notes:
+Generate the MAXIMUM number of unique, meaningful ${difficulty} multiple choice questions possible from these notes.
 
 ${notes}
 
@@ -96,20 +97,54 @@ Return ONLY valid JSON.
 ]
 
 Rules:
-- Do NOT invent facts.
-- Do NOT write introductions.
-- Do NOT write explanations.
-- Do NOT use markdown.
-- Do NOT wrap JSON inside \`\`\`.
+- Generate every meaningful question possible.
+- Do NOT invent information.
+- Stop when there are no more concepts to test.
+- Do NOT repeat questions.
 - Each question must have exactly 4 options.
 - Answer must exactly match one option.
-- Mix factual and conceptual questions.
+- Do NOT use markdown.
+- Do NOT wrap JSON inside \`\`\`.
+`
+    : `
+You are an expert competitive exam paper setter.
+
+Generate UP TO ${questionCount} ${difficulty} multiple choice questions from these notes.
+
+${notes}
+
+Return ONLY valid JSON.
+
+[
+  {
+    "question":"...",
+    "options":["...","...","...","..."],
+    "answer":"..."
+  }
+]
+
+Rules:
+- Generate as many meaningful questions as possible, up to ${questionCount}.
+- If the notes don't contain enough information, generate fewer questions instead of inventing content.
+- Do NOT invent facts.
+- Do NOT repeat questions.
+- Each question must have exactly 4 UNIQUE options.
+- Never repeat an option.
+- The correct answer must appear exactly once.
+- The answer must exactly match one of the four options.
+- Do NOT use markdown.
+- Do NOT wrap JSON inside \`\`\`.
 `;
 
+const prompt =
+  studyMode === "topic"
+    ? topicPrompt
+    : notesPrompt;
+
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-    });
+  model: "gemini-2.5-flash",
+  contents: prompt,
+});
 
     let text = response.text ?? "";
 
@@ -126,15 +161,39 @@ Rules:
     ) {
       return Response.json({
         success: false,
-        message:
-          "Topic not recognized. Please check the spelling or try another topic.",
+       message:
+  studyMode === "notes"
+    ? "Your notes didn't contain enough information to generate questions. Try adding more detailed notes."
+    : "Topic not recognized. Please check the spelling or try another topic.",
       });
     }
 
-    return Response.json({
-      success: true,
-      result: parsed,
-    });
+   const validated = parsed.filter((mcq: MCQ) => {
+  if (
+    !mcq.question ||
+    !Array.isArray(mcq.options) ||
+    mcq.options.length !== 4
+  ) {
+    return false;
+  }
+
+  const uniqueOptions = new Set(mcq.options);
+
+  if (uniqueOptions.size !== 4) {
+    return false;
+  }
+
+  if (!mcq.options.includes(mcq.answer)) {
+    return false;
+  }
+
+  return true;
+});
+
+return Response.json({
+  success: true,
+  result: validated,
+});
   } catch (error) {
     console.error(error);
 
