@@ -4,20 +4,29 @@ import type { ChatMessage } from "@/lib/bhidu/chat";
 
 import ChatInput from "./ChatInput";
 import MessageBubble from "./MessageBubble";
+import LanguageSelector from "./LanguageSelector";
+import type { BhiduLanguage } from "@/lib/bhidu/types";
 
 type ConversationProps = {
   messages: ChatMessage[];
+
+  language: BhiduLanguage;
+  setLanguage: (language: BhiduLanguage) => void;
+
   userMessage: string;
-  loading: boolean;
   setUserMessage: (value: string) => void;
+
+  loading: boolean;
   askBhidu: () => void;
 };
 
 export default function Conversation({
   messages,
+  language,
+  setLanguage,
   userMessage,
-  loading,
   setUserMessage,
+  loading,
   askBhidu,
 }: ConversationProps) {
   return (
@@ -31,6 +40,17 @@ export default function Conversation({
         <h1 className="mt-2 text-4xl font-black text-zinc-900">
           😎 Bhidu
         </h1>
+
+        <div className="mt-5">
+  <p className="mb-3 text-sm font-semibold text-zinc-600">
+    🌍 Language
+  </p>
+
+  <LanguageSelector
+    value={language}
+    onChange={setLanguage}
+  />
+</div>
 
         <p className="mt-2 text-zinc-600">
           Your AI Study Partner
